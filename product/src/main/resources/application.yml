@@ -1,0 +1,13 @@
+---
+micronaut:
+    application:
+        name: product
+                
+#Uncomment to set server port
+    server:
+        port: 8090
+
+---
+kafka:
+    bootstrap:
+        servers: ${ADVERTISED_HOST:192.168.99.102}:${ADVERTISED_PORT:9092}

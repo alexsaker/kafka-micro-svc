@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: productstore
+---
+testFramework: spek
+sourceLanguage: kotlin
