@@ -4,10 +4,14 @@ micronaut:
         name: productStore
                 
 #Uncomment to set server port
-#    server:
-#        port: 8080
-
+    server:
+        port: 8085
+redis:
+    uri: redis://localhost:6379
+    #uri: redis://6WNd0asELP@192.168.99.100:6379
+    #uri: redis://192.168.99.100:31246
+    timeout: 3s
 ---
 kafka:
     bootstrap:
-        servers: ${ADVERTISED_HOST:192.168.99.102}:${ADVERTISED_PORT:9092}
+        servers: localhost:9092

@@ -32,6 +32,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
     implementation "io.micronaut:runtime"
+    annotationProcessor "io.micronaut.configuration:openapi"
     kapt "io.micronaut:inject-java"
     kapt "io.micronaut:validation"
     kaptTest "io.micronaut:inject-java"

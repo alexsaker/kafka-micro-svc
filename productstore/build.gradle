@@ -33,6 +33,10 @@ dependencies {
     kapt "io.micronaut:inject-java"
     kapt "io.micronaut:validation"
     kaptTest "io.micronaut:inject-java"
+    compile "io.micronaut.configuration:redis-lettuce"
+    annotationProcessor "io.micronaut.configuration:openapi"
+
+    compile "org.slf4j:slf4j-api:1.7.25"
     runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
     runtimeOnly "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4.1"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.1.0"

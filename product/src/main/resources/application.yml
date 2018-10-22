@@ -10,4 +10,4 @@ micronaut:
 ---
 kafka:
     bootstrap:
-        servers: ${ADVERTISED_HOST:192.168.99.102}:${ADVERTISED_PORT:9092}
+        servers: localhost:9092
