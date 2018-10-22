@@ -12,6 +12,12 @@ redis:
     #uri: redis://192.168.99.100:31246
     timeout: 3s
 ---
+redis:
+    uri: redis://${REDIS_HOST:192.168.99.100}:${REDIS_PORT:6379}
 kafka:
     bootstrap:
+<<<<<<< HEAD
         servers: localhost:9092
+=======
+        servers: ${KAFKA_HOST:192.168.99.100}:${KAFKA_PORT:9092}
+>>>>>>> cc5cfd2f985d445fcfc02c9f001f72ea7752dc8b
