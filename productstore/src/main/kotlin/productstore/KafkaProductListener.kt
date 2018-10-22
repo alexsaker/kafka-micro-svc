@@ -6,9 +6,8 @@ import javax.inject.Inject
 import org.slf4j.LoggerFactory
 
 @KafkaListener(offsetReset = OffsetReset.LATEST)
-<<<<<<< HEAD
-class KafkaProductListener @Inject constructor(
-        private val redisConnection: StatefulRedisConnection<String, String>,
+class KafkaProductListener  constructor(
+        @Inject private val redisConnection: StatefulRedisConnection<String, String>
 ){
     private lateinit var redisReactiveCmds: RedisReactiveCommands<String, String>
     private val logger = LoggerFactory.getLogger(KafkaProductListener::class.java)
@@ -19,10 +18,6 @@ class KafkaProductListener @Inject constructor(
         } catch (ex: RuntimeException) {
             logger.error(ex.message)
         }
-=======
-class KafkaProductListener{
->>>>>>> cc5cfd2f985d445fcfc02c9f001f72ea7752dc8b
-
     }
     @Topic("my-products")
     fun receive(@KafkaKey brand: String, product: Product) {
