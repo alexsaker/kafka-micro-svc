@@ -20,6 +20,7 @@ repositories {
 dependencyManagement {
     imports {
         mavenBom 'io.micronaut:bom:1.0.0.RC1'
+        mavenBom 'io.micronaut:bom:1.0.0.RC2'
     }
 }
 
@@ -33,6 +34,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
     implementation "io.micronaut:runtime"
     annotationProcessor "io.micronaut.configuration:openapi"
+    compile "io.micronaut.configuration:mongo-reactive"
     kapt "io.micronaut:inject-java"
     kapt "io.micronaut:validation"
     kaptTest "io.micronaut:inject-java"

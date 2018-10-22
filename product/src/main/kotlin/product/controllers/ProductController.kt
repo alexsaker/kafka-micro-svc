@@ -1,7 +1,9 @@
 package product.controllers
 
 import com.fasterxml.jackson.core.JsonParseException
-import io.micronaut.context.event.ApplicationEventPublisher
+import com.mongodb.reactivestreams.client.MongoClient
+import com.mongodb.reactivestreams.client.Success
+import com.sun.org.apache.xml.internal.security.Init
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
@@ -11,21 +13,47 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.hateos.JsonError
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Error
+import io.micronaut.http.annotation.Get
+import io.reactivex.Flowable
 import product.clients.KafkaProductClient
 import product.models.Product
 import product.operations.ProductOperations
 import java.lang.RuntimeException
-import javax.ws.rs.BadRequestException
 
 
 @Controller("/products")
-open class ProductController(
-        @Inject open val kafkaProductClient: KafkaProductClient
+class ProductController(
+        @Inject open val kafkaProductClient: KafkaProductClient,
+        @Inject open val mongoClient:MongoClient
 ) : ProductOperations {
+
+    @Get("/")
+    override fun getAllProducts(limit:Int? ): Single<MutableList<Product>>{
+        val myLimit =  limit ?: 15
+        return Flowable.fromPublisher(
+                mongoClient
+                        .getDatabase("test")
+                        .getCollection("products")
+                        .find().limit(myLimit))
+                .map { Product(
+                        it.get("name","N.A"),
+                        it.get("brand","N.A"),
+                        it.get("price",0.0f),
+                        it.get("quantity",0))
+                }
+                .toList()
+    }
+
+
+
     @Post("/")
     override fun save(product: Product): Single<Product>{
         kafkaProductClient.sendProduct(brand = product.brand,product=product )
-        return Single.just(product)
+        return Single.fromPublisher(
+                mongoClient
+                        .getDatabase("test")
+                        .getCollection("products", Product::class.java)
+                        .insertOne(product)).map { _: Success -> product }
     }
 
     @Error
