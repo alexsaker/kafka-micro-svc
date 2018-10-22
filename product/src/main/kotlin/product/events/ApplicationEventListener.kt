@@ -1,5 +1,4 @@
-package product
-
+package product.events
 
 import io.micronaut.context.annotation.Context
 import io.micronaut.context.event.ApplicationEventListener

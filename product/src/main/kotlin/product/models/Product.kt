@@ -1,5 +1,4 @@
-package product
-
+package product.models
 import com.fasterxml.jackson.annotation.JsonProperty
 
 

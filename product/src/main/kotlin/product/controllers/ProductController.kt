@@ -1,4 +1,4 @@
-package product
+package product.controllers
 
 import com.fasterxml.jackson.core.JsonParseException
 import io.micronaut.context.event.ApplicationEventPublisher
@@ -9,31 +9,36 @@ import io.reactivex.Single
 import javax.inject.Inject
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.hateos.JsonError
-import io.micronaut.http.HttpResponse.status
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Error
-import io.micronaut.http.hateos.Link
+import product.clients.KafkaProductClient
+import product.models.Product
+import product.operations.ProductOperations
+import java.lang.RuntimeException
+import javax.ws.rs.BadRequestException
 
 
 @Controller("/products")
 open class ProductController(
-        @Inject open val kafkaProductClient:KafkaProductClient,
-        @Inject open val eventPublisher:ApplicationEventPublisher
-) : ProductOperations{
+        @Inject open val kafkaProductClient: KafkaProductClient
+) : ProductOperations {
     @Post("/")
-    override fun save(product:Product): Single<Product>{
+    override fun save(product: Product): Single<Product>{
         kafkaProductClient.sendProduct(brand = product.brand,product=product )
-        eventPublisher.publishEvent("I just send to kafka a product ${product.name}")
         return Single.just(product)
     }
 
     @Error
     open fun jsonError(request: HttpRequest<Any?>, jsonParseException: JsonParseException): HttpResponse<JsonError> {
-      //  val error = JsonError("Invalid JSON: " + jsonParseException.message)
-       //         .link(Link.SELF, Link.of(request.uri))
         return HttpResponse.badRequest<JsonError>(
                 JsonError("Fix your JSON bro!!")
         ).status(HttpStatus.BAD_REQUEST)
-        // return status(HttpStatus.BAD_REQUEST,"Fix your json bro!!!")
+    }
+
+    @Error
+    open fun validationError(request: HttpRequest<Any?>, runtimeException: RuntimeException): HttpResponse<JsonError> {
+        return HttpResponse.badRequest<JsonError>(
+                JsonError("Fix your entered data bro!!: ${runtimeException.message}")
+        ).status(HttpStatus.BAD_REQUEST)
     }
 }

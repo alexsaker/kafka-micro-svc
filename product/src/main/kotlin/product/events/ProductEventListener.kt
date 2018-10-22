@@ -1,4 +1,4 @@
-package product
+package product.events
 import io.micronaut.context.annotation.Context
 import io.micronaut.discovery.event.ServiceStartedEvent
 import io.micronaut.runtime.event.annotation.EventListener
